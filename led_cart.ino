@@ -2,23 +2,28 @@
 #include <inttypes.h>
 #include <FastLED.h>
 
+// pushbutton to swich modes
 #define BUTTON_PIN 2
-#define LED_DATA_PIN A0
 
+// 1M of a 144LED/M led strip
+#define LED_DATA_PIN A0
 #define NUM_LEDS 144
 CRGB leds[NUM_LEDS];
 
 #include "modes.h"
 
-
+// check mode change button for input
 bool chkin(){
+  // don't want repeated triggering
   static bool changeable = true;
   if (changeable && digitalRead(BUTTON_PIN)) {
     changeable = false;
     mode::next();
+    return true;
   } else if (!changeable && !digitalRead(BUTTON_PIN)) {
     changeable = true;
   }
+  return false;
 }
 
 void setup(){
@@ -40,5 +45,4 @@ void loop(){
   // apply the colors
   FastLED.show();
 }
-
 
