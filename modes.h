@@ -174,8 +174,16 @@ namespace mode2 {
 
 }
 
+// do nothing
+namespace mode3 {
+  void init(){}
+  void periodic(){
+    delay(25);  
+  }
+}
+
 // we have 3 modes
-#define NUM_MODES 3
+#define NUM_MODES 4
 
 // mode related stuff
 namespace mode {
@@ -198,6 +206,7 @@ namespace mode {
       case 0: mode0::init(); break;
       case 1: mode1::init(); break;
       case 2: mode2::init(); break;
+      case 3: mode3::init(); break;
     }
   }
 
@@ -207,6 +216,7 @@ namespace mode {
       case 0: mode0::periodic(); break;
       case 1: mode1::periodic(); break;
       case 2: mode2::periodic(); break;
+      case 3: mode3::periodic(); break;
     }  
   }
 
