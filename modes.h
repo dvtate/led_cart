@@ -79,10 +79,11 @@ namespace mode0 {
   }
 }
 
-// red mode
+// red mode (red alliance)
 namespace mode1 {
   bool goingRight;
   uint16_t curLED;
+  
   void init(){
     goingRight = true;
     curLED = 0;
@@ -111,7 +112,7 @@ namespace mode1 {
         leds[i] = CRGB(255, 0, 0);
       leds[i] = CRGB::Black;
 
-      // switch directions
+      // move (and possibly switch directions)
       if (--curLED == 0)
         goingRight = true;
     }
@@ -121,10 +122,11 @@ namespace mode1 {
 
 }
 
-// blue mode
+// blue mode (blue alliance)
 namespace mode2 {
   bool goingRight;
   uint16_t curLED;
+  
   void init(){
     goingRight = true;
     curLED = 0;
@@ -137,25 +139,34 @@ namespace mode2 {
       
       if (curLED < 20) 
         curLED += 20;
-        
+
+      // print tail
       for (; i > 0 && curLED - i < 20; i--)
         leds[i] = CRGB(0, 0, 255);
+
+      // end tail
       leds[i] = CRGB::Black;
 
       // switch directions  
       if (++curLED == NUM_LEDS)
         goingRight = false;
+        
     } else {
+      // don't pause at edges
       if (curLED > NUM_LEDS - 20)
         curLED -= 20;
-        
+
+      // print tail
       for (; i < NUM_LEDS - 1 && i - curLED < 20; i++)
         leds[i] = CRGB(0, 0, 255);
+
+      // end tail
       leds[i] = CRGB::Black;
 
-      // switch directions
+      // move (and possibly switch directions)
       if (--curLED == 0)
         goingRight = true;
+        
     }
 
     delay(5);
@@ -163,32 +174,40 @@ namespace mode2 {
 
 }
 
+// we have 3 modes
 #define NUM_MODES 3
 
+// mode related stuff
 namespace mode {
-  
+
+  // current mode
   uint8_t modeNum = 0;
 
+  // switch modes
   void next(){
+    // reset LEDs
     for (int i = 0; i < NUM_LEDS; i++)
       leds[i] = CRGB::Black;
 
+    // change mode number
     if (++modeNum == NUM_MODES)
       modeNum = 0;
 
+    // initialize mode
     switch (modeNum) {
       case 0: mode0::init(); break;
       case 1: mode1::init(); break;
       case 2: mode2::init(); break;
     }
   }
+
+  // run current mode
   void run(){
     switch (modeNum) {
       case 0: mode0::periodic(); break;
       case 1: mode1::periodic(); break;
       case 2: mode2::periodic(); break;
     }  
-    
   }
 
 }
