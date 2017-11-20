@@ -9,3 +9,6 @@ You can cycle between modes by pressing the button on the side of the cart.
   <li>blue alliance - a scanner bar which goes back and fourth</li>
   <li>do nothing - quietly consuming power without flashy lights</li>
 </ol>
+
+### Video Demo
+https://youtu.be/UTpTruc5DSg
